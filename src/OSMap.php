@@ -33,7 +33,11 @@ class OSMap extends Widget
     /** @var float longitude Y */
     public $longitude = 52.45202093175121;
 
+    /** @var string markerText */
+    public $markerText = "Schwendenerstr. 31, 14195 Berlin";
 
+    /** @var string markerColor */
+    public $markerColor = "red";
 
 
     /** basePath property */
@@ -65,24 +69,35 @@ class OSMap extends Widget
 
 
         /** js config  */
-
+        // zoom intial
         if (isset($this->options['initialZoom'])) {
             $this->initialZoom = $this->options['initialZoom'];
         }
         $this->configJs = "var osmap_initialZoom=".$this->initialZoom.";";
 
-
+        // longitude
         if (isset($this->options['longitude'])) {
             $this->longitude = $this->options['longitude'];
         }
         $this->configJs .= "var osmap_longitude=".$this->longitude.";";
 
+        // latitude
         if (isset($this->options['latitude'])) {
             $this->latitude = $this->options['latitude'];
         }
         $this->configJs.= "var osmap_latitude=".$this->latitude.";";
 
+        // markertext
+        if (isset($this->options['markerText'])) {
+            $this->markerText = $this->options['markerText'];
+        }
+        $this->configJs.= "var osmap_markerText='".$this->markerText."';";
 
+        // markercolor
+        if (isset($this->options['markerColor'])) {
+            $this->markerColor = $this->options['markerColor'];
+        }
+        $this->configJs.= "var osmap_markerColor='".$this->markerColor."';";
 
 
         /** css config  */
@@ -95,8 +110,6 @@ class OSMap extends Widget
 
         $this->configCss = ".osmap { height : ".$this->height
             ."; width : ".$this->width."; }";
-
-
 
 
 
