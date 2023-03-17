@@ -21,14 +21,38 @@ to the require section of your `composer.json` file.
 ## Usage
 
 ```php
-$blubb;
+# add to composer.json
+"require-dev" : {
+		...,
+		"isq-portal/yii2-osmtileproxy": "@dev"
+	}
 
-# returns some 'words'
-bla bla tba
+# temporary dev local path (../) solution:
+"repositories": [
+		...,
+		{
+			"type": "path",
+			"url": "../yii2-osmtileproxy"
+		}
+	],
 
-echo "widget";
+# composer update
 
-Options:
+# import class to view
+use IsqPortal\Yii2Osmtileproxy\OSMap;
+
+# integrate widget to view with options., e.g.:
+
+<?= OSMap::widget(['options' => [
+                        'height' => '400px',
+                        'initialZoom' => '16',
+                        'markerText' => 'Schwendenerstr. 31, 14195 Berlin',
+                        'markerColor' => 'blue',
+                        'width' => '100%',
+                        'longitude' => '52.45202093',
+                        'latitude' => '13.29243064',
+                    ]
+                ]); ?> 
 ```
 
 ## License
