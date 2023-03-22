@@ -1,15 +1,17 @@
 <?php
-
+/** namespace */
 namespace IsqPortal\Yii2Osmtileproxy;
 
+/** class imports */
 use Yii;
 use yii\base\Widget;
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\web\View;
 use yii\helpers\Json;
 
 /**
- *
+ * main OSMap class definition
  */
 class OSMap extends Widget
 {
@@ -52,7 +54,14 @@ class OSMap extends Widget
     /** view Property */
     public $view;
 
+    /** bundle property */
+    private $bundle;
 
+    /** baseUrl property */
+    private $baseUrl;
+
+    /** osmap proxy */
+    private $osmap_proxy = 'OSMapProxy.php';
 
     /** widget init
      * @return void
@@ -62,13 +71,21 @@ class OSMap extends Widget
         /** parent init call */
         parent::init();
 
-        /** get basePath */
-        $this->basePath = Yii::getAlias('@webroot');
-
+        /** set alias for routing **/
         Yii::setAlias('@osmap', dirname(__FILE__));
 
+        /** get the asset bundle instance */
+        $this->bundle = Yii::$app->getAssetManager()->getBundle('IsqPortal\Yii2Osmtileproxy\OSMapAsset');
 
-        /** js config  */
+        /** get asset baseUrl */
+        $this->baseUrl = $this->bundle->baseUrl;
+
+        /** get asset basePath */
+        $this->basePath = $this->bundle->basePath;
+
+
+        /** begin js config  *******************************************************/
+
         // zoom intial
         if (isset($this->options['initialZoom'])) {
             $this->initialZoom = $this->options['initialZoom'];
@@ -99,8 +116,15 @@ class OSMap extends Widget
         }
         $this->configJs.= "var osmap_markerColor='".$this->markerColor."';";
 
+        // add path to js
+        $this->configJs.= "var osmap_path='".$this->baseUrl."';";
 
-        /** css config  */
+        // add proxy file to js
+        $this->configJs.= "var osmap_proxy='".$this->osmap_proxy."';";
+
+        /** end js config  *******************************************************/
+
+        /** begin css config  ****************************************************/
         if (isset($this->options['height'])) {
             $this->height = $this->options['height'];
         }
@@ -110,10 +134,9 @@ class OSMap extends Widget
 
         $this->configCss = ".osmap { height : ".$this->height
             ."; width : ".$this->width."; }";
+        /** end css config  ****************************************************/
 
-
-
-
+        /** call register Assets function */
         $this->registerAssets();
     }
 
@@ -122,10 +145,9 @@ class OSMap extends Widget
      */
     public function run()
     {
-        // return Html::encode($this->basePath);
+        // generate the div tag with osmap id
         return Html::tag('div', '', ['id' => 'osmap', 'class' => 'osmap']);
     }
-
 
     /**
      * Registers the needed assets
