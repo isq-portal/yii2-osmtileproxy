@@ -36,9 +36,9 @@ var osmap_map;
 var osmap_my_x;
 var osmap_my_y;
 
-var osmap_deltax = 0.7;
-var osmap_deltay = 0.3;
-var osmap_extent;
+var osmap_deltax = 2;
+var osmap_deltay = 1;
+
 var osmap_maxResolution;
 var osmap_resolution = 0;
 
@@ -46,6 +46,7 @@ var osmap_resolution = 0;
 /** central map init function **/      
 function osmap_initAll() {
 
+    /** tile source initialisation **/
     var osmap_mysource = new ol.source.OSM({
         crossOrigin: null,
         url: osmap_relpath+'?z={z}&x={x}&y={y}&r=osm',
@@ -53,12 +54,14 @@ function osmap_initAll() {
         maxZoom: osmap_maxzoom
     });
 
+    /** tile server proxy with tile source **/
     var osmaps_tileserver = new ol.layer.Tile({
         source: osmap_mysource,
         declutter: true,
         maxZoom: osmap_maxzoom
     });
 
+    /** tile loading error handling **/
     osmap_mysource.on('tileloadend', function () {
         osmap_tileerror = 0;
     });
@@ -70,32 +73,33 @@ function osmap_initAll() {
         }
     });
 
+    /** calculate map extent to limit scrollable map area **/
+    var osmap_extent = ol.proj.transformExtent([
+            osmap_x - osmap_deltax, osmap_y - osmap_deltay, osmap_x + osmap_deltax, osmap_y + osmap_deltay
+        ], 'EPSG:4326', 'EPSG:3857'
+    );
+
     /** get additional controlButtons **/
     var additionalControlButtons = getDrawCenterControl();
 
     /** init osmap_map object **/
     osmap_map = new ol.Map({
         target: osmap_target,
-        /**
-        layers: [
-            new ol.layer.Tile({
-            source: new ol.source.OSM()
-          })
-        ],
-        **/
         layers: [osmaps_tileserver],
         view: new ol.View({
             center: ol.proj.fromLonLat([osmap_x, osmap_y]),
             zoom: osmap_initialZoom,
             minZoom: osmap_minzoom,
-            maxZoom: osmap_maxzoom
+            maxZoom: osmap_maxzoom,
+            extent: osmap_extent,
         }),
+        /** add control buttons **/
         controls: ol.control.defaults().extend([additionalControlButtons]),
     });
 
     /** function calls to extend map with functions **/
     osmap_addMarker();
-
+    /** add event listener for buttons **/
     osmap_addEventListener();
 
 

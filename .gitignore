@@ -69,3 +69,9 @@ node_modules
 # PHPSTORM
 #########
 .idea
+
+# .env
+.env
+
+# own vendor
+vendor
