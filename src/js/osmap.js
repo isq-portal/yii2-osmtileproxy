@@ -2,8 +2,8 @@
 /** declare needed variables **/
 var osmap_target = "osmap";
 
-var osmap_x=osmap_latitude;
-var osmap_y=osmap_longitude;
+var osmap_x=osmap_longitude;
+var osmap_y=osmap_latitude;
 var osmap_initialZoom=osmap_initialZoom;
 
 var osmap_relpath=osmap_path+'/'+osmap_proxy;

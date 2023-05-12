@@ -30,10 +30,10 @@ class OSMap extends Widget
     public $initialZoom = 16;
 
     /** @var float latitude X */
-    public $latitude = 13.292430649149545;
+    public $latitude = 52.45202093175121;
 
     /** @var float longitude Y */
-    public $longitude = 52.45202093175121;
+    public $longitude = 13.292430649149545;
 
     /** @var string markerText */
     public $markerText = "Schwendenerstr. 31, 14195 Berlin";
