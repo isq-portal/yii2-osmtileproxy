@@ -116,7 +116,7 @@ function saveTileToLocal($tileStreamUrl, $localTileDirectory, $localTileFileName
 {
     global $osMapProxyUserAgent;
     if (!is_dir($localTileDirectory)) {
-        mkdir($localTileDirectory, 0755, true);
+        @mkdir($localTileDirectory, 0755, true);
     }
     $tileFilePointer = fopen($localTileFileName, 'wb');
     $tileCurlHandle = curl_init($tileStreamUrl);
